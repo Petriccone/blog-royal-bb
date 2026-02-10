@@ -52,7 +52,7 @@ export default async function HomePage() {
             >
               Saiba mais
             </Link>
-            <Link
+            <a
               href="https://www.royalbeb.com.br/"
               target="_blank"
               rel="noopener noreferrer"
@@ -67,7 +67,7 @@ export default async function HomePage() {
               }}
             >
               Guia de filtros
-            </Link>
+            </a>
           </div>
         </div>
       </section>

@@ -165,7 +165,7 @@ a:hover {
     padding: 0.25rem 0;
   }
 
-  .site-header-nav a[href="#guia"] {
+  .site-header-nav .site-header-cta {
     padding: 0.35rem 0.65rem;
     font-size: 0.8rem;
   }

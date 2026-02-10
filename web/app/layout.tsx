@@ -43,7 +43,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                   Sobre
                 </a>
                 <a
-                  href="#guia"
+                  href="https://www.royalbeb.com.br/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="site-header-cta"
                   style={{
                     padding: "0.45rem 0.9rem",
                     borderRadius: "999px",
