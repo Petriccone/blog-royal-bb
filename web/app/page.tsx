@@ -53,7 +53,9 @@ export default async function HomePage() {
               Saiba mais
             </Link>
             <Link
-              href="#guia"
+              href="https://www.royalbeb.com.br/"
+              target="_blank"
+              rel="noopener noreferrer"
               style={{
                 padding: "0.6rem 1.1rem",
                 borderRadius: "999px",
