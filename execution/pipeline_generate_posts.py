@@ -108,15 +108,18 @@ def _build_frontmatter(
     date_str = datetime.now(timezone.utc).date().isoformat()
     tags = keywords or ["água", "saúde", "filtros"]
     tags_yaml = "[" + ", ".join(f'"{t}"' for t in tags) + "]"
+    # Escapar aspas para YAML (fora da f-string: backslash em f-string é inválido)
+    title_escaped = title.replace('"', '\\"')
+    summary_escaped = summary.replace('"', '\\"')
 
     frontmatter_lines = [
         "---",
-        f'title: "{title.replace("\\\"", "\\\\\"")}"',
+        f'title: "{title_escaped}"',
         f"slug: \"{slug}\"",
         f"date: \"{date_str}\"",
         f"source: \"{article.source}\"",
         f"original_url: \"{article.original_url}\"",
-        f"summary: \"{summary.replace('\\\"', '\\\\\"')}\"",
+        f'summary: "{summary_escaped}"',
         f"tags: {tags_yaml}",
     ]
     # Compat: manter campo image como capa
