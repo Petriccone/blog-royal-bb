@@ -170,6 +170,7 @@ def process_single_article(
         language=article.language,
     )
 
+    print(f"  [artigo {ctx.id}] mediator_agent...", flush=True)
     mediator_result = mediator_agent.run(
         {
             "raw_text": ctx.raw_text,
@@ -178,6 +179,7 @@ def process_single_article(
             "language": ctx.language,
         }
     )
+    print(f"  [artigo {ctx.id}] mediator ok. approved={mediator_result.get('approved')}", flush=True)
 
     if not mediator_result.get("approved") and review_mode == "strict":
         storage.mark_article_failed(
@@ -201,9 +203,7 @@ def process_single_article(
     image_cover_path: Optional[str] = None
     image_inline_path: Optional[str] = None
     if generate_images:
-        # Primeiro, pedimos para o agente de design criar prompts específicos
-        # a partir do conteúdo final do artigo, para evitar imagens sem contexto
-        # ou com foco em produtos.
+        print(f"  [artigo {ctx.id}] image_prompt_designer...", flush=True)
         prompts = image_prompt_designer_agent.run(
             {
                 "title": title,
@@ -213,7 +213,7 @@ def process_single_article(
         )
         cover_prompt = str(prompts.get("cover_prompt") or "").strip() or None
         inline_prompt = str(prompts.get("inline_prompt") or "").strip() or None
-
+        print(f"  [artigo {ctx.id}] image_agent capa...", flush=True)
         try:
             img_result = image_agent.run(
                 {
@@ -232,6 +232,7 @@ def process_single_article(
                     _download_image(image_url, dest)
                     image_cover_path = f"/images/posts/{slug}-cover.png"
 
+            print(f"  [artigo {ctx.id}] image_agent inline...", flush=True)
             # segunda imagem para o meio do texto
             img_result_inline = image_agent.run(
                 {
@@ -334,8 +335,16 @@ def run(params: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
         articles = storage.fetch_unprocessed_articles(limit=limit)
     else:
         articles = storage.fetch_articles_by_status(status=status, limit=limit)
+
+    total = len(articles)
+    print(f"[pipeline_generate_posts] Artigos a processar: {total}", flush=True)
+    if total == 0:
+        print("[pipeline_generate_posts] Nenhum artigo raw. Resumo vazio.", flush=True)
+        return {"total_articles": 0, "results": []}
+
     results = []
-    for art in articles:
+    for i, art in enumerate(articles):
+        print(f"[pipeline_generate_posts] Processando artigo {art.id} ({i + 1}/{total})...", flush=True)
         try:
             res = process_single_article(
                 art,
@@ -343,7 +352,9 @@ def run(params: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
                 generate_images=generate_images,
             )
             results.append(res)
+            print(f"[pipeline_generate_posts] Artigo {art.id} concluído. approved={res.get('approved')}", flush=True)
         except Exception as exc:
+            print(f"[pipeline_generate_posts] ERRO no artigo {art.id}: {exc}", flush=True)
             storage.mark_article_failed(art.id, f"pipeline_error: {exc}")
             results.append(
                 {
@@ -354,10 +365,10 @@ def run(params: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
             )
 
     summary = {
-        "total_articles": len(articles),
+        "total_articles": total,
         "results": results,
     }
-    print("[pipeline_generate_posts] resumo:", summary)
+    print("[pipeline_generate_posts] resumo:", summary, flush=True)
     return summary
 
 

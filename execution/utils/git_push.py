@@ -36,13 +36,13 @@ def push_posts_to_github() -> bool:
         return True  # nada a fazer
     token = os.getenv("GITHUB_TOKEN", "").strip()
     if not token:
-        print("[git_push] PUSH_TO_GITHUB ativo mas GITHUB_TOKEN não definido. Pulando push.")
+        print("[git_push] PUSH_TO_GITHUB ativo mas GITHUB_TOKEN não definido. Pulando push.", flush=True)
         return False
 
     # Garante que estamos no repo
     ok, out = _run(["git", "status"])
     if not ok:
-        print("[git_push] Não é um repositório git ou git não disponível:", out)
+        print("[git_push] Não é um repositório git ou git não disponível:", out, flush=True)
         return False
 
     # Configura autor do commit (necessário em ambientes CI/Railway)
@@ -59,7 +59,7 @@ def push_posts_to_github() -> bool:
 
     ok, out = _run(["git", "status", "--short"])
     if not ok or not out.strip():
-        print("[git_push] Nenhuma alteração em posts/imagens. Push omitido.")
+        print("[git_push] Nenhuma alteração em posts/imagens. Push omitido.", flush=True)
         return True
 
     # Configura remote com token (HTTPS)
@@ -68,7 +68,7 @@ def push_posts_to_github() -> bool:
     if ok and out.strip():
         remote_url = out.strip()
     if not remote_url or "github.com" not in remote_url:
-        print("[git_push] Remote origin não parece GitHub. Pulando push.")
+        print("[git_push] Remote origin não parece GitHub. Pulando push.", flush=True)
         return False
 
     # Insere token na URL para autenticação
@@ -79,13 +79,13 @@ def push_posts_to_github() -> bool:
 
     ok, out = _run(["git", "commit", "-m", "chore: novos posts do pipeline (Railway)"])
     if not ok and "nothing to commit" not in out.lower():
-        print("[git_push] Falha no commit:", out)
+        print("[git_push] Falha no commit:", out, flush=True)
         return False
 
     ok, out = _run(["git", "push", "origin", "HEAD"])
     if not ok:
-        print("[git_push] Falha no push:", out)
+        print("[git_push] Falha no push:", out, flush=True)
         return False
 
-    print("[git_push] Push concluído. Vercel deve redeployar em breve.")
+    print("[git_push] Push concluído. Vercel deve redeployar em breve.", flush=True)
     return True
