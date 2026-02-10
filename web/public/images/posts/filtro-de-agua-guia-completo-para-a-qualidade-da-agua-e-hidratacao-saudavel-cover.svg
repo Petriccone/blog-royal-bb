@@ -1,0 +1,21 @@
+<svg width="1200" height="400" viewBox="0 0 1200 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="heroGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0EA5E9"/>
+      <stop offset="1" stop-color="#0369A1"/>
+    </linearGradient>
+    <linearGradient id="waveGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#E0F2FE"/>
+      <stop offset="1" stop-color="#BAE6FD"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="400" rx="32" fill="url(#heroGrad)"/>
+  <path d="M0 260C120 290 240 305 360 300C520 292 640 260 800 260C960 260 1080 288 1200 320V400H0V260Z" fill="url(#waveGrad)" fill-opacity="0.9"/>
+  <circle cx="120" cy="120" r="40" fill="#E0F2FE" fill-opacity="0.3"/>
+  <circle cx="220" cy="80" r="26" fill="#E0F2FE" fill-opacity="0.28"/>
+  <circle cx="1030" cy="90" r="32" fill="#E0F2FE" fill-opacity="0.3"/>
+  <circle cx="960" cy="140" r="20" fill="#E0F2FE" fill-opacity="0.25"/>
+  <path d="M190 105C175 128 162 146 162 164C162 184 176 196 196 196C216 196 230 184 230 164C230 146 217 128 202 105C199 100.5 193 100.5 190 105Z" fill="#E0F2FE"/>
+  <path d="M196 154C202.627 154 208 148.627 208 142C208 135.373 202.627 130 196 130C189.373 130 184 135.373 184 142C184 148.627 189.373 154 196 154Z" fill="#0EA5E9"/>
+</svg>
+

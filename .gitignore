@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+.venv/
+venv/
+
+# Arquivos locais e segredos
+.env
+credentials.json
+token.json
+
+# Arquivos intermediários
+.tmp/
+
+# Node / Next.js
+node_modules/
+web/node_modules/
+.next/
+web/.next/
+
+# Outros
+.DS_Store
+

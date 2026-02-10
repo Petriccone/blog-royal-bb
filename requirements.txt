@@ -1,0 +1,7 @@
+# Dependências mínimas para os scripts em execution/
+python-dotenv
+requests
+google-api-python-client
+google-auth
+google-auth-oauthlib
+beautifulsoup4
