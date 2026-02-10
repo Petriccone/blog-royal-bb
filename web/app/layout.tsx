@@ -20,21 +20,13 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                 <img
                   src="/logo-royal-bb.png"
                   alt="Blog Royal B&B"
-                  style={{ height: 36, width: "auto" }}
+                  className="site-header-logo"
                 />
                 <div>
                   <h1 className="site-title">Blog Royal B&B</h1>
                 </div>
               </div>
-              <nav
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "1.5rem",
-                  fontSize: "0.85rem",
-                  fontWeight: 500,
-                }}
-              >
+              <nav className="site-header-nav">
                 <a href="/" style={{ color: "#f9fafb" }}>
                   Home
                 </a>

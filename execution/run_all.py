@@ -12,6 +12,7 @@ from datetime import datetime
 
 from execution import scrape_articles
 from execution import pipeline_generate_posts
+from execution.utils import git_push
 
 
 def main() -> None:
@@ -25,11 +26,14 @@ def main() -> None:
         {
             # modo mais permissivo para garantir publicação regular
             "review_mode": "lenient",
-            "limit": 5,
+            "limit": 4,
             "status": "raw",
             "generate_images": True,
         }
     )
+
+    print("[run_all] Etapa 3: push para GitHub (se PUSH_TO_GITHUB=1)...")
+    git_push.push_posts_to_github()
 
     print(f"[run_all] Fim da execução em {datetime.utcnow().isoformat()}Z")
 

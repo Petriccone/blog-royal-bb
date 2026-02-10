@@ -57,6 +57,8 @@ a:hover {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
 }
 
 .site-header-left {
@@ -65,10 +67,25 @@ a:hover {
   gap: 0.6rem;
 }
 
+.site-header-logo {
+  height: 36px;
+  width: auto;
+  display: block;
+}
+
 .site-title {
   font-size: 1.4rem;
   font-weight: 700;
   letter-spacing: -0.03em;
+}
+
+.site-header-nav {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  flex-wrap: wrap;
 }
 
 .site-header .site-title {
@@ -112,6 +129,59 @@ a:hover {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+  }
+}
+
+/* ========== Mobile (responsivo) ========== */
+@media (max-width: 767px) {
+  .site-root {
+    overflow-x: hidden;
+  }
+
+  .site-header-inner {
+    padding: 0.6rem 0.75rem;
+  }
+
+  .site-header-left {
+    gap: 0.5rem;
+  }
+
+  .site-header-logo {
+    height: 28px;
+  }
+
+  .site-title {
+    font-size: 1rem;
+  }
+
+  .site-header-nav {
+    width: 100%;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    justify-content: flex-start;
+  }
+
+  .site-header-nav a {
+    padding: 0.25rem 0;
+  }
+
+  .site-header-nav a[href="#guia"] {
+    padding: 0.35rem 0.65rem;
+    font-size: 0.8rem;
+  }
+
+  .site-main-inner {
+    padding: 1.25rem 0.75rem 2rem;
+  }
+
+  .site-footer-inner {
+    padding: 0.75rem 0.75rem;
+    font-size: 0.7rem;
+    text-align: center;
+  }
+
+  .site-footer-inner span {
+    line-height: 1.4;
   }
 }
 
@@ -223,15 +293,72 @@ a:hover {
 @media (max-width: 768px) {
   .home-hero {
     min-height: 38vh;
-    padding: 2.5rem 1.25rem;
+    padding: 2rem 1rem;
+    border-radius: var(--radius-sm);
   }
+
+  .home-hero-title {
+    font-size: 1.6rem;
+    line-height: 1.25;
+  }
+
+  .home-hero-text {
+    font-size: 0.875rem;
+    max-width: 100%;
+  }
+
+  .home-hero-content [style*="marginTop"] {
+    margin-top: 1rem !important;
+    gap: 0.5rem !important;
+  }
+
+  .home-hero-content a {
+    padding: 0.5rem 0.9rem !important;
+    font-size: 0.8rem !important;
+  }
+
   .feature-row {
     grid-template-columns: 1fr;
     gap: 1.5rem;
     padding: 1.5rem 0 0;
   }
+
   .feature-item {
     text-align: center;
+  }
+
+  .benefits-section {
+    padding: 1.5rem 1rem 1.25rem;
+    border-radius: var(--radius-md);
+  }
+
+  .benefits-title {
+    font-size: 0.95rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .home-layout {
+    gap: 1.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .home-hero-title {
+    font-size: 1.4rem;
+  }
+
+  .post-card-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+
+  .post-page-title {
+    font-size: 1.5rem;
+  }
+
+  .post-page {
+    padding: 0 0.5rem;
   }
 }
 
@@ -460,5 +587,33 @@ a:hover {
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+/* Mobile: página de post e conteúdo */
+@media (max-width: 767px) {
+  .post-card-body {
+    padding: 0.85rem 0.9rem;
+  }
+
+  .post-card-title {
+    font-size: 0.95rem;
+  }
+
+  .post-card-excerpt {
+    font-size: 0.85rem;
+  }
+
+  .sidebar-panel {
+    padding: 0.9rem 0.85rem;
+    font-size: 0.8rem;
+  }
+
+  .sidebar-panel-title {
+    font-size: 0.9rem;
+  }
+
+  #destaques .sidebar-panel-title {
+    font-size: 1rem;
+  }
 }
 
