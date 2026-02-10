@@ -12,11 +12,15 @@ Fluxo:
 
 from __future__ import annotations
 
+import hashlib
 import re
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, Optional
+
+# Limite de tamanho do slug para evitar "File name too long" (Errno 36)
+MAX_SLUG_LENGTH = 80
 
 import requests
 
@@ -86,7 +90,13 @@ def _slugify(text: str) -> str:
         text = text.replace(src, dst)
     text = re.sub(r"[^a-z0-9]+", "-", text)
     text = re.sub(r"-{2,}", "-", text).strip("-")
-    return text or f"post-{int(datetime.now(timezone.utc).timestamp())}"
+    slug = text or f"post-{int(datetime.now(timezone.utc).timestamp())}"
+    # Limitar tamanho para evitar Errno 36 (File name too long)
+    if len(slug) > MAX_SLUG_LENGTH:
+        base = slug[: MAX_SLUG_LENGTH - 7].rstrip("-")
+        suffix = hashlib.md5(slug.encode()).hexdigest()[:6]
+        slug = f"{base}-{suffix}"
+    return slug
 
 
 def _download_image(url: str, dest_path: Path) -> None:
