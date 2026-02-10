@@ -29,13 +29,13 @@ SOURCES: List[SourceConfig] = [
         id="superfilter",
         base_url="https://blog.superfilter.com.br",
         list_paths=["/"],
-        max_articles_per_run=8,
+        max_articles_per_run=4,
     ),
     SourceConfig(
         id="doctoragua",
         base_url="https://doctoragua.es",
         list_paths=["/blog/"],
-        max_articles_per_run=8,
+        max_articles_per_run=4,
     ),
 ]
 

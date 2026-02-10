@@ -1,0 +1,15 @@
+# Não copiar para a imagem (evita vazar .env e reduz tamanho)
+.env
+.env.*
+!.env.example
+# .git NÃO ignorar: o cron precisa do repo para git push
+.gitignore
+**/__pycache__
+**/.pytest_cache
+**/node_modules
+**/.next
+data/
+*.db
+.cursor
+*.md
+!README.md

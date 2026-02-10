@@ -35,3 +35,14 @@ Configure em **Variables** (e opcionalmente no `env.example`):
 - **Command:** `python -m execution.run_all`
 
 Não use o start command do serviço para rodar o pipeline; use apenas o Cron com o comando acima.
+
+## Erro "No such file or directory: 'git'"
+
+O container padrão do Railway pode não ter o **Git** instalado. Sem ele, a Etapa 3 (push) falha.
+
+**Solução:** o projeto inclui um **Dockerfile** que instala Git na imagem. No Railway:
+
+1. No seu serviço, em **Settings**, confira se o **Builder** está usando o Dockerfile (deploy a partir do repositório com Dockerfile ativado).
+2. Se o Railway usar Nixpacks em vez do Dockerfile: em **Settings** → **Build**, ative **Use Dockerfile** ou adicione um **nixpacks.toml** com a instalação de `git`. A forma mais garantida é usar o **Dockerfile** do repositório.
+
+Depois do próximo deploy, o cron terá o comando `git` disponível e o push para o GitHub deve funcionar.

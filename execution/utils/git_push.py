@@ -33,10 +33,14 @@ def _run(cmd: list[str], cwd: Path | None = None) -> tuple[bool, str]:
 
 def push_posts_to_github() -> bool:
     if not os.getenv("PUSH_TO_GITHUB", "").strip().lower() in ("1", "true", "yes"):
-        return True  # nada a fazer
+        print(
+            "[git_push] Push desativado. Para subir posts ao site: defina PUSH_TO_GITHUB=1 e GITHUB_TOKEN no .env",
+            flush=True,
+        )
+        return True
     token = os.getenv("GITHUB_TOKEN", "").strip()
     if not token:
-        print("[git_push] PUSH_TO_GITHUB ativo mas GITHUB_TOKEN não definido. Pulando push.", flush=True)
+        print("[git_push] PUSH_TO_GITHUB=1 mas GITHUB_TOKEN não definido. Pulando push.", flush=True)
         return False
 
     # Garante que estamos no repo
@@ -57,9 +61,14 @@ def push_posts_to_github() -> bool:
     for p in paths:
         _run(["git", "add", p])
 
-    ok, out = _run(["git", "status", "--short"])
-    if not ok or not out.strip():
-        print("[git_push] Nenhuma alteração em posts/imagens. Push omitido.", flush=True)
+    # Só commitamos se realmente houver alteração em posts ou imagens
+    ok, out = _run(["git", "diff", "--cached", "--name-only"])
+    if not ok:
+        return False
+    staged = [f for f in (out or "").strip().splitlines() if f]
+    relevant = [f for f in staged if "content/posts" in f or "images/posts" in f]
+    if not relevant:
+        print("[git_push] Nenhuma alteração em posts/imagens. Nada a enviar.", flush=True)
         return True
 
     # Configura remote com token (HTTPS)

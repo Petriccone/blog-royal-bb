@@ -110,21 +110,30 @@ def upsert_raw_article(
     language: Optional[str] = None,
 ) -> int:
     """
-    Insere um novo artigo bruto, ou retorna o ID se já existir.
+    Insere um novo artigo bruto ou atualiza um existente (re-scrape).
+    Ao atualizar, define status='raw' e limpa failure_reason para o pipeline processar de novo.
     """
     init_db()
     now = _now_iso()
     with get_conn() as conn:
         cur = conn.cursor()
-        # Tenta buscar já existente
         cur.execute(
             "SELECT id FROM articles WHERE original_url = ?",
             (original_url,),
         )
         row = cur.fetchone()
         if row:
-            return int(row["id"])
-
+            aid = int(row["id"])
+            cur.execute(
+                """
+                UPDATE articles
+                SET title = ?, raw_text = ?, language = ?, scraped_at = ?,
+                    status = 'raw', failure_reason = NULL, updated_at = ?
+                WHERE id = ?
+                """,
+                (title, raw_text, language, now, now, aid),
+            )
+            return aid
         cur.execute(
             """
             INSERT INTO articles (
