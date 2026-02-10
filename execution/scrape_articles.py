@@ -10,7 +10,7 @@ Fluxo:
 from __future__ import annotations
 
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import List
 
 import requests
@@ -157,7 +157,7 @@ def run() -> None:
             # se já existia, upsert_raw_article apenas retorna o id; contamos novos
             total_new += 1
 
-    print(f"[scrape_articles] Execução concluída em {datetime.utcnow().isoformat()}Z")
+    print(f"[scrape_articles] Execução concluída em {datetime.now(timezone.utc).isoformat()}Z")
     print(f"[scrape_articles] Novos artigos (incluindo possíveis duplicatas ignoradas): {total_new}")
 
 

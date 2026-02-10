@@ -14,7 +14,7 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, Optional
 
@@ -86,7 +86,7 @@ def _slugify(text: str) -> str:
         text = text.replace(src, dst)
     text = re.sub(r"[^a-z0-9]+", "-", text)
     text = re.sub(r"-{2,}", "-", text).strip("-")
-    return text or f"post-{int(datetime.utcnow().timestamp())}"
+    return text or f"post-{int(datetime.now(timezone.utc).timestamp())}"
 
 
 def _download_image(url: str, dest_path: Path) -> None:
@@ -105,7 +105,7 @@ def _build_frontmatter(
     summary: str,
     keywords: list[str],
 ) -> str:
-    date_str = datetime.utcnow().date().isoformat()
+    date_str = datetime.now(timezone.utc).date().isoformat()
     tags = keywords or ["água", "saúde", "filtros"]
     tags_yaml = "[" + ", ".join(f'"{t}"' for t in tags) + "]"
 
