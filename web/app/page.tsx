@@ -153,6 +153,24 @@ export default async function HomePage() {
             </article>
           ))}
         </div>
+        {posts.length > 0 && (
+          <div style={{ marginTop: "1.5rem", textAlign: "center" }}>
+            <Link
+              href="/blog"
+              style={{
+                display: "inline-block",
+                padding: "0.65rem 1.25rem",
+                borderRadius: "var(--radius-sm)",
+                background: "linear-gradient(135deg, #0079b8, #00a6d6)",
+                color: "#fff",
+                fontSize: "0.9rem",
+                fontWeight: 600,
+              }}
+            >
+              Ver todos os artigos
+            </Link>
+          </div>
+        )}
       </section>
 
       {/* Seção de guia / CTA */}

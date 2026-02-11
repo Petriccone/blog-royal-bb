@@ -30,7 +30,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                 <a href="/" style={{ color: "#f9fafb" }}>
                   Home
                 </a>
-                <a href="#blog" style={{ color: "#e5e7eb" }}>
+                <a href="/blog" style={{ color: "#e5e7eb" }}>
                   Blog
                 </a>
                 <a href="#sobre" style={{ color: "#e5e7eb" }}>
