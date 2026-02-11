@@ -114,7 +114,7 @@ export default async function HomePage() {
               Guias de compra simplificados para você decidir sem complicações.
             </p>
           </article>
-          Artigos em destaque        </div>
+        </div>
       </section>
 
       {/* Artigos em destaque */}
