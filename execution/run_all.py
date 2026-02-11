@@ -27,11 +27,11 @@ def main() -> None:
     scrape_articles.run()
     print("[run_all] Etapa 1 concluída.", flush=True)
 
-    print("[run_all] Etapa 2: geração de posts (até 4 artigos)...", flush=True)
+    print("[run_all] Etapa 2: geração de 1 post (mais profundo)...", flush=True)
     pipeline_generate_posts.run(
         {
             "review_mode": "lenient",
-            "limit": 4,
+            "limit": 1,
             "status": "raw",
             "generate_images": True,
         }

@@ -84,14 +84,16 @@ def _clone_and_push(token: str) -> bool:
         if not ok:
             print("[git_push] Falha ao clonar:", out, flush=True)
             return False
-        # Substitui posts/imagens no clone pelo conteúdo do container (build + novos)
+        # Mescla posts/imagens do container no clone (adiciona/atualiza, NUNCA apaga o que já está no clone).
+        # O container só tem os posts desta execução; o clone tem o histórico do GitHub. Assim não perdemos artigos antigos.
         for rel in ["web/content/posts", "web/public/images/posts"]:
             src = PROJECT_ROOT / rel
             dst = clone_path / rel
             if src.exists():
-                if dst.exists():
-                    shutil.rmtree(dst)
-                shutil.copytree(src, dst)
+                dst.mkdir(parents=True, exist_ok=True)
+                for f in src.iterdir():
+                    if f.is_file():
+                        shutil.copy2(f, dst / f.name)
         return _push_from_repo(clone_path, token)
 
 

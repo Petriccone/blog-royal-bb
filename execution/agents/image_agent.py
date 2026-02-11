@@ -58,12 +58,11 @@ def _build_prompt(params: ImageParams) -> str:
 
     if params.kind == "inline":
         base = (
-            f"Ilustração detalhada relacionada a {params.main_topic}, "
-            f"com foco em um conceito específico do artigo '{params.title}' "
-            "como qualidade da água, hidratação, bem-estar da família ou água limpa no dia a dia. "
-            "Composição mais simples, adequada para aparecer no meio do texto, "
-            "com fundo limpo, cores em tons de azul e branco, sem texto na imagem "
-            "e sem mostrar produtos ou aparelhos específicos."
+            f"Fotografia editorial realista sobre {params.main_topic}, "
+            f"inspirada no tema '{params.title}': cena com água cristalina, hidratação ou bem-estar, "
+            "estilo foto de revista de saúde e qualidade de vida, imagem realista e limpa, "
+            "não ilustração e não desenho. Tons de azul e branco, sem texto na imagem "
+            "e sem produtos ou aparelhos específicos."
         )
     else:
         base = (

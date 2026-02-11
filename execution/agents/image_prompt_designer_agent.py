@@ -62,9 +62,11 @@ def _build_user_prompt(p: PromptDesignerParams) -> str:
         "}\n\n"
         "Onde:\n"
         "- cover_prompt: descrição visual para a IMAGEM DE CAPA do artigo, mais ampla e impactante.\n"
-        "- inline_prompt: descrição visual para uma IMAGEM INLINE, mais simples, para aparecer no meio do texto.\n\n"
+        "- inline_prompt: descrição para uma FOTOGRAFIA EDITORIAL (não ilustração nem desenho) no meio do texto; "
+        "cena realista, estilo foto de revista de saúde/qualidade de vida.\n\n"
         "Requisitos dos prompts:\n"
         "- Escreva os prompts em português claro.\n"
+        "- Para inline_prompt: peça sempre 'fotografia editorial', 'foto realista', 'estilo fotográfico' — nunca ilustração ou desenho.\n"
         "- Não cite marcas, logotipos, rótulos ou modelos de aparelhos.\n"
         "- Não descreva close-ups de equipamentos ou refis; foque em água, pessoas, natureza e ambientes neutros.\n"
         "- Use entre 1 e 3 frases por prompt, no máximo ~220 caracteres.\n"
@@ -98,8 +100,8 @@ def run(params: Dict[str, Any]) -> Dict[str, Any]:
         "sem mostrar produtos ou aparelhos, estilo editorial limpo em tons de azul e branco."
     )
     inline_prompt_fallback = (
-        "Ilustração simples sobre qualidade da água e saúde, com foco em água limpa "
-        "e pessoas se hidratando, sem produtos ou marcas."
+        "Fotografia editorial realista sobre qualidade da água e saúde: cena com água limpa "
+        "e ambiente de bem-estar, estilo revista, sem produtos ou marcas, não ilustração."
     )
 
     cover_prompt = cover_prompt_fallback

@@ -276,28 +276,18 @@ def process_single_article(
             idx = (ctx.id + 1) % len(FALLBACK_INLINE_IMAGES)
             image_inline_path = FALLBACK_INLINE_IMAGES[idx]
 
-    # Se tivermos imagem inline, inserimos um bloco de imagem no meio do conteúdo
+    # Se tivermos imagem inline, inserimos no meio do texto (não logo abaixo da capa)
     if image_inline_path and content_markdown:
-        lines = content_markdown.splitlines()
-        new_lines = []
-        inserted = False
-        for line in lines:
-            new_lines.append(line)
-            if not inserted and line.lstrip().startswith("## "):
-                # insere logo após o primeiro subtítulo
-                new_lines.append("")
-                new_lines.append(
-                    f"![Ilustração sobre água, filtros e saúde]({image_inline_path})"
-                )
-                new_lines.append("")
-                inserted = True
-        if not inserted:
-            # fallback: adiciona ao final
-            new_lines.append("")
-            new_lines.append(
-                f"![Ilustração sobre água, filtros e saúde]({image_inline_path})"
-            )
-        content_markdown = "\n".join(new_lines)
+        blocks = content_markdown.split("\n\n")
+        if len(blocks) < 2:
+            content_markdown = content_markdown + "\n\n![Foto sobre água, filtros e saúde](" + image_inline_path + ")\n\n"
+        else:
+            # Inserir após o bloco que está em ~50% do texto
+            mid = len(blocks) // 2
+            before = "\n\n".join(blocks[: mid + 1])
+            after = "\n\n".join(blocks[mid + 1 :])
+            img_block = f"\n\n![Foto sobre água, filtros e saúde]({image_inline_path})\n\n"
+            content_markdown = before + img_block + after
 
     post_path = _write_markdown_post(
         title=title,

@@ -37,17 +37,17 @@ def _build_system_prompt() -> str:
         "prefira falar em categorias (por exemplo, \"refis de polipropileno\", \"carcaças para filtros\", \"purificadores de parede\").\n\n"
         "Regras importantes:\n"
         "- NUNCA copie frases inteiras do texto original; mude estrutura, ordem e exemplos.\n"
-        "- Explique conceitos de forma clara para leigos, mas com profundidade científica: "
-        "discuta mecanismos fisiológicos, parâmetros de qualidade da água, tipos de contaminantes e tecnologias de filtração.\n"
-        "- O texto final deve ter, no mínimo, 800 palavras (busque entre 800 e 1.300 palavras).\n"
+        "- FAÇA UMA PESQUISA MENTAL MAIS PROFUNDA: vá além do óbvio; traga contexto científico, "
+        "mecanismos (fisiológicos, químicos, de filtração), comparações entre abordagens, prós e contras quando cabível, "
+        "e implicações práticas para o dia a dia. O leitor deve sentir que está lendo um artigo de referência.\n"
+        "- Explique conceitos de forma clara para leigos, mas com complexidade e profundidade: "
+        "parâmetros de qualidade da água, tipos de contaminantes, tecnologias de filtração, como escolher e o que observar.\n"
+        "- O texto final deve ter entre 1.200 e 2.000 palavras. Priorize um único artigo bem aprofundado em vez de superficial.\n"
         "- Evite qualquer promessa médica exagerada ou diagnóstico; use linguagem cuidadosa.\n"
-        "- Conecte naturalmente o tema à importância de usar água filtrada de qualidade.\n"
-        "- Use subtítulos organizando a leitura (seções lógicas), parágrafos relativamente curtos e listas quando fizer sentido.\n"
-        "- Sempre que mencionar evidências científicas, faça isso de forma geral (\"estudos mostram\", "
-        "\"pesquisas indicam\"), sem inventar nomes de autores, revistas ou números de referência específicos.\n"
-        "- NÃO use citações numéricas do tipo [1], [2], [3] no texto final.\n"
-        "- Escreva em português brasileiro, mesmo que o artigo original esteja em outro idioma.\n"
-        "- No final, inclua um parágrafo de conclusão com um call-to-action suave relacionado a filtros de água.\n"
+        "- Use subtítulos que organizem a leitura (várias seções lógicas), parágrafos densos mas legíveis e listas quando fizer sentido.\n"
+        "- Mencione evidências de forma geral (\"estudos mostram\", \"pesquisas indicam\"), sem inventar autores ou referências.\n"
+        "- NÃO use citações numéricas [1], [2] no texto final.\n"
+        "- Escreva em português brasileiro. Conclua com um call-to-action suave sobre filtros de água.\n"
         "- NÃO mencione que o texto foi gerado por IA ou baseado em outro artigo.\n"
     )
 
@@ -66,10 +66,11 @@ def _build_user_prompt(params: WriterParams) -> str:
         f"{params.raw_text}\n"
         "-------------------------\n\n"
         "TAREFA:\n"
-        "- Reescreva COMPLETAMENTE o artigo acima em português brasileiro.\n"
-        "- Crie um novo título atraente, mas responsável.\n"
-        "- Gere também um resumo curto (1 parágrafo) e uma lista de 5–10 palavras-chave de SEO relacionadas a água, filtros e saúde.\n"
-        "- Garanta que o corpo do artigo tenha pelo menos 800 palavras e aprofunde conceitos técnicos de forma acessível.\n\n"
+        "- Reescreva COMPLETAMENTE o artigo acima em português brasileiro, com abordagem mais profunda e analítica.\n"
+        "- Crie um novo título atraente e responsável.\n"
+        "- Gere um resumo curto (1 parágrafo) e 5–10 palavras-chave de SEO.\n"
+        "- O corpo do artigo deve ter entre 1.200 e 2.000 palavras: aprofunde conceitos, traga contexto científico e prático, "
+        "vá além do superficial. Um único artigo de qualidade é melhor que um texto raso.\n\n"
         "FORMATO DE RESPOSTA (IMPORTANTE – SIGA EXATAMENTE ESTE MODELO):\n"
         "TÍTULO:\n"
         "...\n\n"
@@ -145,7 +146,7 @@ def run(params: Dict[str, Any]) -> Dict[str, Any]:
         {"role": "user", "content": _build_user_prompt(writer_params)},
     ]
 
-    content = llm.chat_completion_text(messages, temperature=0.65, max_tokens=None)
+    content = llm.chat_completion_text(messages, temperature=0.6, max_tokens=4096)
     sections = _extract_sections(content)
 
     return {
