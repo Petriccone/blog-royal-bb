@@ -30,14 +30,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                 <a href="/" style={{ color: "#f9fafb" }}>
                   Home
                 </a>
-                <a href="#tipos-filtros" style={{ color: "#e5e7eb" }}>
-                  Tipos de filtros
-                </a>
                 <a href="#blog" style={{ color: "#e5e7eb" }}>
                   Blog
-                </a>
-                <a href="#recomendacoes" style={{ color: "#e5e7eb" }}>
-                  Recomendações
                 </a>
                 <a href="#sobre" style={{ color: "#e5e7eb" }}>
                   Sobre
@@ -50,22 +44,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                   style={{
                     padding: "0.45rem 0.9rem",
                     borderRadius: "999px",
-                    background: "linear-gradient(135deg, #00B4DB, #0083B0)",
-                    color: "white",
+                    background: "linear-gradient(135deg, #fbbf24, #f59e0b)", // amarelo dourado
+                    color: "#111827",
                     fontWeight: 600,
-                  }}
-                >
-                  Guia de compra
-                </a>
-                <a
-                  href="https://www.royalbeb.com.br/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    fontWeight: 500,
-                    color: "#e5e7eb",
-                    borderLeft: "1px solid #374151",
-                    paddingLeft: "1.25rem",
                   }}
                 >
                   Royal B&B
