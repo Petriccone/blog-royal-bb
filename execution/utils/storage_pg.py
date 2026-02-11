@@ -35,14 +35,26 @@ class Article:
     updated_at: str
 
 
+def _get_database_url() -> str:
+    """Normaliza DATABASE_URL: uma linha, sem espaços/quebras no meio. Evita erro 'missing =' do psycopg2."""
+    raw = os.getenv("DATABASE_URL", "").strip()
+    if not raw:
+        raise RuntimeError("DATABASE_URL não definida. Para usar Postgres/Supabase, defina DATABASE_URL.")
+    url = raw.replace("\r\n", "").replace("\n", "").replace("\r", "").strip()
+    if not url.lower().startswith(("postgresql://", "postgres://")):
+        raise RuntimeError(
+            "DATABASE_URL deve ser uma URI começando com postgresql:// ou postgres://. "
+            "Ex.: postgresql://usuario:senha@host.pooler.supabase.com:6543/postgres"
+        )
+    return url
+
+
 @contextmanager
 def get_conn() -> Iterable[psycopg2.extensions.connection]:
     """
     Context manager para conexão PostgreSQL (DATABASE_URL).
     """
-    url = os.getenv("DATABASE_URL", "").strip()
-    if not url:
-        raise RuntimeError("DATABASE_URL não definida. Para usar Postgres/Supabase, defina DATABASE_URL.")
+    url = _get_database_url()
     conn = psycopg2.connect(url, cursor_factory=RealDictCursor)
     try:
         yield conn

@@ -15,6 +15,7 @@ import tempfile
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
+LAST_RUN_SLUGS_FILE = PROJECT_ROOT / ".tmp" / "last_run_slugs.txt"
 
 
 def _run(cmd: list[str], cwd: Path | None = None, timeout: int = 120) -> tuple[bool, str]:
@@ -68,8 +69,17 @@ def _push_from_repo(repo_path: Path, token: str) -> bool:
     return True
 
 
+def _slugs_from_last_run() -> list[str]:
+    """Slugs gerados nesta execução (run_all grava em .tmp/last_run_slugs.txt)."""
+    if not LAST_RUN_SLUGS_FILE.exists():
+        return []
+    text = LAST_RUN_SLUGS_FILE.read_text(encoding="utf-8").strip()
+    return [s.strip() for s in text.splitlines() if s.strip()]
+
+
 def _clone_and_push(token: str) -> bool:
-    """Container sem .git: clona o repo, copia posts/imagens, commit e push."""
+    """Container sem .git: clona o repo, copia só os posts/imagens DESTA execução para o clone, commit e push.
+    O clone (GitHub) é a fonte da verdade; nunca apagamos artigos que já estão lá."""
     repo = os.getenv("GITHUB_REPO", "").strip()
     if not repo:
         print(
@@ -78,22 +88,29 @@ def _clone_and_push(token: str) -> bool:
         )
         return False
     url = f"https://{token}@github.com/{repo}.git"
+    slugs = _slugs_from_last_run()
     with tempfile.TemporaryDirectory(prefix="blog_push_") as tmp:
         clone_path = Path(tmp) / "repo"
         ok, out = _run(["git", "clone", "--depth", "1", url, str(clone_path)], timeout=180)
         if not ok:
             print("[git_push] Falha ao clonar:", out, flush=True)
             return False
-        # Mescla posts/imagens do container no clone (adiciona/atualiza, NUNCA apaga o que já está no clone).
-        # O container só tem os posts desta execução; o clone tem o histórico do GitHub. Assim não perdemos artigos antigos.
-        for rel in ["web/content/posts", "web/public/images/posts"]:
-            src = PROJECT_ROOT / rel
-            dst = clone_path / rel
-            if src.exists():
-                dst.mkdir(parents=True, exist_ok=True)
-                for f in src.iterdir():
-                    if f.is_file():
-                        shutil.copy2(f, dst / f.name)
+        # Copiar só os arquivos gerados nesta execução (slugs). O clone já tem todos os artigos do GitHub; não apagamos nada.
+        posts_src = PROJECT_ROOT / "web" / "content" / "posts"
+        posts_dst = clone_path / "web" / "content" / "posts"
+        images_src = PROJECT_ROOT / "web" / "public" / "images" / "posts"
+        images_dst = clone_path / "web" / "public" / "images" / "posts"
+        if slugs:
+            posts_dst.mkdir(parents=True, exist_ok=True)
+            images_dst.mkdir(parents=True, exist_ok=True)
+            for slug in slugs:
+                md = posts_src / f"{slug}.md"
+                if md.is_file():
+                    shutil.copy2(md, posts_dst / md.name)
+                for img in images_src.iterdir() if images_src.exists() else []:
+                    if img.is_file() and (img.stem == slug or img.stem.startswith(f"{slug}-")):
+                        shutil.copy2(img, images_dst / img.name)
+        # Se não há slugs desta execução, não copiamos nada do container (o clone já está correto; evita apagar artigos).
         return _push_from_repo(clone_path, token)
 
 

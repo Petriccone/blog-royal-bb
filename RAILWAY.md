@@ -29,12 +29,13 @@ O pipeline precisa persistir quais artigos já foram processados. No Railway nã
 ### Opção recomendada: Supabase (PostgreSQL)
 
 1. Crie um projeto em [supabase.com](https://supabase.com) (plano gratuito).
-2. Em **Project Settings** → **Database**, copie a **Connection string** (URI). Use a opção **URI** e substitua `[YOUR-PASSWORD]` pela senha do banco (a mesma que você definiu ao criar o projeto).
-3. No Railway, em **Variables**, adicione:
-   - **Nome:** `DATABASE_URL`
-   - **Valor:** a URL completa. **Se a senha tiver caracteres especiais** (`@`, `#`, `%`, etc.), codifique na URL: `@` → `%40`, `#` → `%23`, `%` → `%25`. Ex.: senha `Passaro@3735` → use `Passaro%403735` na URL.  
-     (pode ser porta **5432** ou **6543** — Session ou Transaction mode).
-4. O código cria as tabelas `articles` e `posts` automaticamente na primeira execução. Não é preciso rodar migrações manualmente.
+2. Em **Project Settings** → **Database**, use a **Connection string do pooler** (não a conexão direta). O Railway **não suporta IPv6**; o host direto `db.xxx.supabase.co` resolve para IPv6 e gera "Network is unreachable". O pooler usa um host que funciona (IPv4).
+   - Na seção **Connection pooling**, escolha **URI** (modo Transaction ou Session).
+   - O formato é: `postgresql://postgres.[PROJECT-REF]:[SENHA]@aws-0-[região].pooler.supabase.com:6543/postgres`  
+     (host tipo `aws-0-us-east-1.pooler.supabase.com`, porta **6543**).
+   - Substitua `[YOUR-PASSWORD]` pela senha do banco. Se a senha tiver `@`, `#`, `%`, codifique: `@` → `%40`, `#` → `%23`, `%` → `%25`.
+3. No Railway, em **Variables**, defina **`DATABASE_URL`** com essa URL do **pooler** (não use a URL que contém `db.xxxx.supabase.co`). **Cole em uma única linha**, sem quebras de linha no meio (isso evita o erro "missing '=' after pooler.supabase.com").
+4. O código cria as tabelas `articles` e `posts` automaticamente na primeira execução.
 
 Com `DATABASE_URL` definida, o pipeline usa PostgreSQL e o estado dos artigos (raw/processed) persiste entre todas as execuções do cron, sem depender de volume no Railway.
 
