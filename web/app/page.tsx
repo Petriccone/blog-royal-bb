@@ -72,80 +72,56 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Benefícios logo abaixo do Hero */}
+      {/* Benefícios — 3 cards futuristas com animações */}
       <section className="benefits-section fade-up fade-up-delay-1" id="beneficios">
-        <div className="benefits-title">Por que confiar nas nossas recomendações?</div>
-        <div className="feature-row" id="recomendacoes">
-          <div className="feature-item">
-            <div className="feature-item-icon" aria-hidden>
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
+        <h2 className="benefits-title">Por que confiar nas nossas recomendações?</h2>
+        <div className="trust-cards" id="recomendacoes">
+          <article className="trust-card trust-card-1">
+            <div className="trust-card-glow" aria-hidden />
+            <div className="trust-card-icon" aria-hidden>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
                 <polyline points="22 4 12 14.01 9 11.01" />
               </svg>
             </div>
-            <div className="feature-item-title">Informação verificada</div>
-            <p className="feature-item-text">
+            <h3 className="trust-card-title">Informação verificada</h3>
+            <p className="trust-card-text">
               Conteúdo baseado em estudos e análises técnicas sobre qualidade da água.
             </p>
-          </div>
-          <div className="feature-item">
-            <div className="feature-item-icon" aria-hidden>
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
+          </article>
+          <article className="trust-card trust-card-2">
+            <div className="trust-card-glow" aria-hidden />
+            <div className="trust-card-icon" aria-hidden>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" />
               </svg>
             </div>
-            <div className="feature-item-title">Foco em saúde</div>
-            <p className="feature-item-text">
+            <h3 className="trust-card-title">Foco em saúde</h3>
+            <p className="trust-card-text">
               Priorizamos a saúde da sua família acima de marcas ou produtos.
             </p>
-          </div>
-          <div className="feature-item">
-            <div className="feature-item-icon" aria-hidden>
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
+          </article>
+          <article className="trust-card trust-card-3">
+            <div className="trust-card-glow" aria-hidden />
+            <div className="trust-card-icon" aria-hidden>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="12" cy="12" r="10" />
                 <path d="M8 12h8M12 8l4 4-4 4" />
               </svg>
             </div>
-            <div className="feature-item-title">Recomendações claras</div>
-            <p className="feature-item-text">
+            <h3 className="trust-card-title">Recomendações claras</h3>
+            <p className="trust-card-text">
               Guias de compra simplificados para você decidir sem complicações.
             </p>
-          </div>
-        </div>
+          </article>
+          Artigos em destaque        </div>
       </section>
 
       {/* Artigos em destaque */}
       <section id="destaques">
         <h2 className="sidebar-panel-title">Artigos em destaque</h2>
         {posts.length === 0 && (
-          <p style={{ fontSize: "0.9rem", color: "#6b7280" }}>
+          <p style={{ fontSize: "1.3 rem", color: "#6b7280" }}>
             Em breve você encontrará aqui artigos aprofundados sobre água,
             saúde e filtragem doméstica.
           </p>

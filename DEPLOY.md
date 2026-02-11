@@ -1,5 +1,22 @@
 # Deploy — Blog Royal B&B
 
+## Deploy do app (a partir daqui)
+
+1. **Build (opcional, para validar):** na pasta `web` rode `npm run build`. Se passar, o app está pronto para deploy.
+2. **Enviar para o GitHub:** faça commit e push do que quiser publicar (incluindo `web/`). Se o repositório estiver conectado à Vercel, o deploy é automático.
+3. **Na Vercel:** confira em **Settings → General → Root Directory** que está **`web`**. Assim o Next.js usa a pasta correta.
+
+Se preferir deploy direto pela linha de comando (sem depender do GitHub):
+
+```bash
+cd web
+npx vercel --prod
+```
+
+(Só funciona se você já tiver feito `vercel login` e linkado o projeto. O comando usa a pasta `web` como raiz.)
+
+---
+
 ## Para os artigos aparecerem no site
 
 O site (Next.js) está em `web/`. A Vercel precisa fazer o build a partir dessa pasta.

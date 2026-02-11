@@ -1,12 +1,13 @@
 """
-Agente mediador: coordena writer_agent, seo_agent e reviewer_agent.
+Agente mediador: coordena content_searcher, writer_agent, seo_agent e reviewer_agent.
 
 Fluxo:
 - Recebe um artigo bruto (texto + metadados)
-- Chama writer_agent para gerar uma versão reescrita
-- Chama seo_agent para otimizar o artigo para SEO (sem perder responsabilidade técnica)
-- Chama reviewer_agent para aprovar/reprovar a versão já otimizada
-- Em caso de reprovação, usa o feedback para orientar uma nova versão (até N tentativas)
+- Chama content_searcher_agent para buscar contexto sobre água e saúde
+- Chama writer_agent (com contexto de pesquisa) para gerar versão reescrita
+- Chama seo_agent para otimizar para SEO
+- Chama reviewer_agent para aprovar/reprovar
+- Em caso de reprovação, usa o feedback para nova versão (até N tentativas)
 """
 
 from __future__ import annotations
@@ -14,7 +15,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional
 
-from execution.agents import writer_agent, reviewer_agent, seo_agent
+from execution.agents import content_searcher_agent, writer_agent, reviewer_agent, seo_agent
 
 
 @dataclass
@@ -50,12 +51,21 @@ def run(params: Dict[str, Any]) -> Dict[str, Any]:
     last_seo_output: Optional[Dict[str, Any]] = None
     last_reviewer_output: Optional[Dict[str, Any]] = None
 
+    # Busca complementar sobre água e saúde para enriquecer o artigo
+    topic_for_search = mp.original_title or mp.raw_text[:200].strip()
+    search_result = content_searcher_agent.run({
+        "topic": topic_for_search,
+        "max_results": 5,
+    })
+    research_context = search_result.get("research_context") or ""
+
     for attempt in range(1, mp.max_attempts + 1):
         writer_input: Dict[str, Any] = {
             "raw_text": mp.raw_text,
             "original_title": mp.original_title,
             "original_source": mp.original_source,
             "language": mp.language,
+            "research_context": research_context,
         }
 
         # Se houver feedback do revisor anterior, passamos como contexto adicional.

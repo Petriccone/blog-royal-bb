@@ -19,6 +19,7 @@ class WriterParams:
     original_source: str
     language: str | None
     target_audience: str = "público leigo interessado em saúde e qualidade da água"
+    research_context: str = ""  # trechos de busca (água/saúde) para aprofundar o artigo
 
 
 def _build_system_prompt() -> str:
@@ -56,6 +57,15 @@ def _build_user_prompt(params: WriterParams) -> str:
     lang_info = f"Idioma original detectado: {params.language}.\n" if params.language else ""
     title_info = f"Título original: {params.original_title}\n" if params.original_title else ""
 
+    research_block = ""
+    if params.research_context and params.research_context.strip():
+        research_block = (
+            "\nPESQUISA COMPLEMENTAR (use para aprofundar o artigo; não copie literalmente):\n"
+            "-------------------------\n"
+            f"{params.research_context[:3500]}\n"
+            "-------------------------\n\n"
+        )
+
     return (
         f"{lang_info}"
         f"{title_info}"
@@ -65,6 +75,7 @@ def _build_user_prompt(params: WriterParams) -> str:
         "-------------------------\n"
         f"{params.raw_text}\n"
         "-------------------------\n\n"
+        f"{research_block}"
         "TAREFA:\n"
         "- Reescreva COMPLETAMENTE o artigo acima em português brasileiro, com abordagem mais profunda e analítica.\n"
         "- Crie um novo título atraente e responsável.\n"
@@ -139,6 +150,7 @@ def run(params: Dict[str, Any]) -> Dict[str, Any]:
             "target_audience",
             "público leigo interessado em saúde e qualidade da água",
         ),
+        research_context=str(params.get("research_context", "")),
     )
 
     messages = [

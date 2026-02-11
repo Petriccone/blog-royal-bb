@@ -22,11 +22,32 @@ Resumo: o "Running 1h" no painel é o **serviço** (tail), não o cron. Os logs 
 
 Se os logs pararem no meio (ex.: após "Etapa 2: geração de posts" ou "image_agent capa..."), o processo travou ou foi encerrado nesse ponto (timeout, Fal/API lenta, memória). Use a última linha exibida para saber onde corrigir.
 
+## Banco de dados: Supabase (recomendado) ou SQLite
+
+O pipeline precisa persistir quais artigos já foram processados. No Railway não há volumes simples para arquivos; a solução recomendada é usar um **banco externo**.
+
+### Opção recomendada: Supabase (PostgreSQL)
+
+1. Crie um projeto em [supabase.com](https://supabase.com) (plano gratuito).
+2. Em **Project Settings** → **Database**, copie a **Connection string** (URI). Use a opção **URI** e substitua `[YOUR-PASSWORD]` pela senha do banco (a mesma que você definiu ao criar o projeto).
+3. No Railway, em **Variables**, adicione:
+   - **Nome:** `DATABASE_URL`
+   - **Valor:** a URL completa. **Se a senha tiver caracteres especiais** (`@`, `#`, `%`, etc.), codifique na URL: `@` → `%40`, `#` → `%23`, `%` → `%25`. Ex.: senha `Passaro@3735` → use `Passaro%403735` na URL.  
+     (pode ser porta **5432** ou **6543** — Session ou Transaction mode).
+4. O código cria as tabelas `articles` e `posts` automaticamente na primeira execução. Não é preciso rodar migrações manualmente.
+
+Com `DATABASE_URL` definida, o pipeline usa PostgreSQL e o estado dos artigos (raw/processed) persiste entre todas as execuções do cron, sem depender de volume no Railway.
+
+### Sem DATABASE_URL (SQLite)
+
+Se `DATABASE_URL` não estiver definida, o código usa SQLite em `data/blog_agua.db`. No Railway o filesystem é efêmero, então a cada run o “banco” começa vazio e artigos já publicados podem ser reprocessados. **Por isso, no Railway é recomendado usar Supabase.**
+
 ## Variáveis no Railway
 
 Configure em **Variables** (e opcionalmente no `env.example`):
 
 - `ARTICLE_SCRAPER_API_KEY`, `OPENROUTER_API_KEY`, `FAL_KEY` — obrigatórias para scraping e geração.
+- **`DATABASE_URL`** — **recomendado no Railway**: connection string PostgreSQL (ex.: Supabase) para persistir artigos processados.
 - `PUSH_TO_GITHUB=1` e `GITHUB_TOKEN` — para commit + push automático dos posts para o GitHub (e redeploy na Vercel).
 - **`GITHUB_REPO=owner/repo`** (ex: `Petriccone/blog-royal-bb`) — **obrigatório no Railway**: o container não tem `.git`; o push clona o repo com o token, copia os posts gerados e faz commit + push.
 

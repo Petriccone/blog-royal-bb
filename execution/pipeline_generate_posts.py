@@ -211,6 +211,11 @@ def process_single_article(
     keywords = list(final_article.get("keywords") or [])
     content_markdown = str(final_article.get("content_markdown") or "")
     slug = _slugify(title)
+    # Evitar sobrescrever post de outro artigo: se o slug já existe para outro article_id, tornar único.
+    existing_post = storage.get_post_by_slug(slug)
+    if existing_post and existing_post.get("article_id") != ctx.id:
+        suffix = str(ctx.id)
+        slug = f"{slug}-{suffix}" if len(slug) + 1 + len(suffix) <= MAX_SLUG_LENGTH else f"{slug[: MAX_SLUG_LENGTH - 1 - len(suffix)].rstrip('-')}-{suffix}"
 
     # Gera prompts de imagem (designer) e, em seguida, as imagens (quando habilitado).
     image_cover_path: Optional[str] = None
