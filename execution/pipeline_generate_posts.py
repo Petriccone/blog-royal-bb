@@ -13,6 +13,7 @@ Fluxo:
 from __future__ import annotations
 
 import hashlib
+import os
 import re
 from dataclasses import dataclass
 from datetime import datetime, timezone
@@ -250,24 +251,26 @@ def process_single_article(
                     _download_image(image_url, dest)
                     image_cover_path = f"/images/posts/{slug}-cover.png"
 
-            print(f"  [artigo {ctx.id}] image_agent inline...", flush=True)
-            # segunda imagem para o meio do texto
-            img_result_inline = image_agent.run(
-                {
-                    "title": title,
-                    "summary": summary,
-                    "kind": "inline",
-                    "prompt": inline_prompt,
-                }
-            )
-            image_url_inline = img_result_inline.get("image_url")
-            if image_url_inline:
-                if image_url_inline.startswith("http"):
-                    image_inline_path = image_url_inline
-                else:
-                    dest_inline = IMAGES_DIR / f"{slug}-inline.png"
-                    _download_image(image_url_inline, dest_inline)
-                    image_inline_path = f"/images/posts/{slug}-inline.png"
+            # Inline: só gera via Fal se FAL_GENERATE_INLINE=1 (reduz custo; padrão = fallback Unsplash)
+            generate_inline = os.getenv("FAL_GENERATE_INLINE", "").strip().lower() in ("1", "true", "yes")
+            if generate_inline:
+                print(f"  [artigo {ctx.id}] image_agent inline...", flush=True)
+                img_result_inline = image_agent.run(
+                    {
+                        "title": title,
+                        "summary": summary,
+                        "kind": "inline",
+                        "prompt": inline_prompt,
+                    }
+                )
+                image_url_inline = img_result_inline.get("image_url")
+                if image_url_inline:
+                    if image_url_inline.startswith("http"):
+                        image_inline_path = image_url_inline
+                    else:
+                        dest_inline = IMAGES_DIR / f"{slug}-inline.png"
+                        _download_image(image_url_inline, dest_inline)
+                        image_inline_path = f"/images/posts/{slug}-inline.png"
         except Exception:
             # Falha na imagem automática não impede publicação do texto.
             image_cover_path = None
