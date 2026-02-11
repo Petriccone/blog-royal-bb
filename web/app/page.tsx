@@ -127,7 +127,7 @@ export default async function HomePage() {
           </p>
         )}
         <div className="post-grid">
-          {posts.slice(0, 3).map((post) => (
+          {posts.slice(0, 4).map((post) => (
             <article key={post.slug} className="post-card">
               {post.image && (
                 <div className="post-card-image">
