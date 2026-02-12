@@ -1,7 +1,7 @@
 ---
-title: "Filtro de Chuveiro: Como Proteger Pele e Cabelo da Água Clorada o Ano Todo
+title: **Filtro de Chuveiro: Como Proteger Pele e Cabelo da Água Clorada o Ano Todo**
 
-## NOVA META-DESCRIÇÃO:
+
 Descubra como o cloro e impurezas na água do chuveiro afetam pele e cabelo. Saiba quais filtros funcionam e como escolher o ideal para sua família.
 
 ##"
