@@ -1,9 +1,5 @@
 ---
 title: **Filtro de Entrada para Caixa d'Água: Como Funciona, Por Que Instalar e Como Escolher o Melhor Sistema**
-
-Descubra como um filtro de entrada protege sua caixa d'água, reduz manutenção e prolonga a vida de equipamentos. Guia completo sobre qualidade da água e manutenção.
-
-##"
 slug: "filtro-de-entrada-para-caixa-d-agua-como-funciona-por-que-instalar-e-como-2bb158"
 date: "2026-02-12"
 source: "superfilter"
