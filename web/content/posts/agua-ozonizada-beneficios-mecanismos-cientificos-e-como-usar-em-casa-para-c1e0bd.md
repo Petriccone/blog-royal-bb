@@ -1,4 +1,4 @@
-
+---
 title: "Água Ozonizada: Benefícios, Mecanismos Científicos e Como Usar em Casa para Melhor Qualidade da Água"
 slug: "agua-ozonizada-beneficios-mecanismos-cientificos-e-como-usar-em-casa-para-c1e0bd"
 date: "2026-02-11"
