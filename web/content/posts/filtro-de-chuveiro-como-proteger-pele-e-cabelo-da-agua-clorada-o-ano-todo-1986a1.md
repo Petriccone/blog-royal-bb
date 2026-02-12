@@ -1,5 +1,5 @@
 ---
-title: **Filtro de Chuveiro: Como Proteger Pele e Cabelo da Água Clorada o Ano Todo**
+title: "Filtro de Chuveiro: Como Proteger Pele e Cabelo da Água Clorada o Ano Todo"
 slug: "filtro-de-chuveiro-como-proteger-pele-e-cabelo-da-agua-clorada-o-ano-todo-1986a1"
 date: "2026-02-11"
 source: "superfilter"
